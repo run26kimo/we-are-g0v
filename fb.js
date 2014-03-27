@@ -16,6 +16,7 @@ $(document).ready(function () {
         $("#upload_to_fb div").removeClass("disabled");
       }    
     });
+  });
   // Populate the canvas
   // var c = document.getElementById("c");
   // var ctx = c.getContext("2d");
