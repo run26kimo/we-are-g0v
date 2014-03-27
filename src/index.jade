@@ -31,7 +31,8 @@ html(ng-app="we-are-g0v")
             li 新增串連Facebook 帳號
             li 可以上傳相片到 Facebook
         p
-          .fb-like(data-send='true', data-width='450', data-show-faces='true')
+          .fb-like(data-href='https://github.com/run26kimo/we-are-g0v/', data-layout='standard', data-action='like', data-show-faces='true', data-share='true')
+
 
 
       a(href="https://github.com/run26kimo/we-are-g0v")
@@ -48,9 +49,17 @@ html(ng-app="we-are-g0v")
         .field
           a.ui.red.tiny.button(href="#", ng-click='download()', ng-show='isDone') 下載  
         .field
-          a.ui.greed.tiny.button(id="upload_to_fb" ,href="#", onclick='PostImageToFacebook(window.authToken)', ng-show='isDone') 
-            i.facebook.icon
-            上傳到Facebook
+          span#fglogin(ng-show='isDone')
+            請先登入Facebook =>
+            a.ui.facebook.tiny.button(href="#", onclick='FbLogin()') 
+              i.facebook.icon
+              Facebook Login 
+          br
+          a(id="upload_to_fb" ,href="#", onclick='PostImageToFacebook(window.authToken)', ng-show='isDone') 
+            .ui.facebook.tiny.button.disabled
+              i.facebook.icon
+              上傳到Facebook
+           
 
       #success_message.ui.success.message.hide
         .header
