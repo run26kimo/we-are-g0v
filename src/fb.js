@@ -3,20 +3,19 @@ $(document).ready(function () {
       cache: true
   });
   $.getScript('//connect.facebook.net/zh_TW/all.js', function () {
-      FB.init({
-          appId: '378689895535390',
-          cookie: true,
-          xfbml: true,
-          frictionlessRequests: true,
-          oauth: true
-      });
-      FB.api('/me', function(response) {
-        if (typeof response.id != undefined) {
-          $("#fglogin").hide();
-          $("#upload_to_fb div").removeClass("disabled");
-        };
-      });
-
+    FB.init({
+        appId: '378689895535390',
+        cookie: true,
+        xfbml: true,
+        frictionlessRequests: true,
+        oauth: true
+    });
+    FB.Event.subscribe('auth.authResponseChange', function(response) {
+      if (response.status === 'connected') {
+        $("#fglogin").hide();
+        $("#upload_to_fb div").removeClass("disabled");
+      }    
+    });
   });
 
   // Populate the canvas
