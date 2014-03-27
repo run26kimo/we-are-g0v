@@ -3,29 +3,18 @@ $(document).ready(function () {
       cache: true
   });
   $.getScript('//connect.facebook.net/zh_TW/all.js', function () {
-      // Load the APP / SDK
       FB.init({
-          appId: '768304473222340', // App ID from the App Dashboard
-          cookie: true, // set sessions cookies to allow your server to access the session?
-          xfbml: true, // parse XFBML tags on this page?
+          appId: '768304473222340',
+          cookie: true,
+          xfbml: true,
           frictionlessRequests: true,
           oauth: true
       });
-
-      FB.login(function (response) {
-          if (response.authResponse) {
-            window.authToken = response.authResponse.accessToken;
-            
-            // FB.api('/me', function(response) {
-            //   var input = $("input[ng-model=name]");
-            //   input.val(response.name);
-            //   input.trigger('input');
-            // });
-          } else {
-
-          }
-      }, {
-          scope: 'publish_actions,publish_stream'
+      FB.api('/me', function(response) {
+        if (typeof response.id != undefined) {
+          $("#fglogin").hide();
+          $("#upload_to_fb div").removeClass("disabled");
+        };
       });
 
   });
@@ -37,9 +26,22 @@ $(document).ready(function () {
   // ctx.fillText("This will be posted to Facebook as an image", 10, 50);
 
 });
+function FbLogin(){
+  FB.login(function (response) {
+    if (response.authResponse) {
+      window.authToken = response.authResponse.accessToken;
+      $("#fglogin").hide();
+      $("#upload_to_fb div").removeClass("disabled");
+    } else {
+
+    }
+  }, {
+      scope: 'publish_actions,publish_stream'
+  });
+}
 // Post a BASE64 Encoded PNG Image to facebook
 function PostImageToFacebook(authToken) {
-  $("#upload_to_fb").addClass("loading");
+  $("#upload_to_fb div").addClass("loading");
   var canvas = document.getElementById("c");
   var imageData = canvas.toDataURL("image/png");
   try {
@@ -50,7 +52,7 @@ function PostImageToFacebook(authToken) {
   var fd = new FormData();
   fd.append("access_token", authToken);
   fd.append("source", blob);
-  fd.append("message", "支持反服貿封面產生器 "+ window.location.href);
+  fd.append("message", "支持反服貿封面產生器 run26kimo.github.io/we-are-g0v/");
   try {
       $.ajax({
           url: "https://graph.facebook.com/me/photos?access_token=" + authToken,
@@ -67,7 +69,7 @@ function PostImageToFacebook(authToken) {
             console.log("error " + data + " Status " + shr.status);
           },
           complete: function () {
-            $("#upload_to_fb").removeClass("loading");
+            $("#upload_to_fb div").removeClass("loading");
             $("#success_message").show();
           }
       });
